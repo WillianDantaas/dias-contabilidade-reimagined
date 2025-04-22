@@ -1,6 +1,12 @@
-
 import { useState } from "react";
 import { X } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 interface TeamMember {
   id: number;
@@ -72,31 +78,46 @@ export default function TeamSection() {
           </p>
         </div>
 
-        <div className="flex overflow-x-auto pb-8 -mx-4 px-4 space-x-6 scroll-smooth">
-          {teamMembers.map((member) => (
-            <div
-              key={member.id}
-              className="flex-none w-48 md:w-64 scale-on-scroll cursor-pointer"
-              onClick={() => openModal(member)}
-            >
-              <div className="group relative">
-                <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-full bg-gray-200">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="h-full w-full object-cover object-center group-hover:opacity-90 transition-opacity"
-                  />
-                </div>
-                <div className="mt-4 text-center">
-                  <h3 className="text-lg font-semibold text-dias-blue">{member.name}</h3>
-                  <p className="text-sm text-gray-600">{member.role}</p>
-                </div>
-              </div>
-            </div>
-          ))}
+        <div className="relative px-8">
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {teamMembers.map((member) => (
+                <CarouselItem 
+                  key={member.id}
+                  className="pl-2 md:pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                >
+                  <div 
+                    className="scale-on-scroll cursor-pointer"
+                    onClick={() => openModal(member)}
+                  >
+                    <div className="group relative">
+                      <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-full bg-gray-200">
+                        <img
+                          src={member.image}
+                          alt={member.name}
+                          className="h-full w-full object-cover object-center group-hover:opacity-90 transition-opacity"
+                        />
+                      </div>
+                      <div className="mt-4 text-center">
+                        <h3 className="text-lg font-semibold text-dias-blue">{member.name}</h3>
+                        <p className="text-sm text-gray-600">{member.role}</p>
+                      </div>
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden md:flex" />
+            <CarouselNext className="hidden md:flex" />
+          </Carousel>
         </div>
 
-        {/* Team Member Modal */}
         {selectedMember && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
             <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-auto overflow-hidden animate-scale-in">
